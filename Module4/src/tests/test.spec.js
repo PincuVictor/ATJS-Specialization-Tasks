@@ -72,7 +72,7 @@ describe('Practicesoftwaretesting.com - Core Scenarios', () => {
         const itemText = await firstResultTitle.getText();
 
         assert.isNotNull(itemText, 'Expected to find at least one product in the Hand Tools category');
-        assert.isString(itemText, 'The product title should be returned as a string text');
+        assert.isString(itemText, 'The product title should be returned as a string');
     });
 
     it('Scenario 4: Adding a product to the basket from the details page', async () => {
