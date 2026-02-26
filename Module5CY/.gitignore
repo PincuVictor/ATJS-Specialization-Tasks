@@ -1,2 +1,5 @@
 .idea
+cypress/reports
+cypress/videos
+cypress/screenshots
 node_modules
