@@ -1,4 +1,6 @@
 .idea
 allure-results
+reports
+allure-report
 logs
 node_modules

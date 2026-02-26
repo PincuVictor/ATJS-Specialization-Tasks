@@ -9,5 +9,8 @@
   "private": true,
   "devDependencies": {
     "cypress": "^15.11.0"
+  },
+  "dependencies": {
+    "cypress-mochawesome-reporter": "^4.0.2"
   }
 }
