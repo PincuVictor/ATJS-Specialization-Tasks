@@ -1,0 +1,15 @@
+{
+  "name": "Module6",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:api": "mocha src/tests/api.test.js --timeout 10000",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true,
+  "dependencies": {
+    "chai": "^6.2.2",
+    "mocha": "^11.7.5"
+  }
+}
