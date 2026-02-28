@@ -2,146 +2,100 @@ const { expect, assert } = require('chai');
 const chai = require('chai');
 chai.should();
 
+const LoginPage = require('../bussiness/po/pages/LoginPage');
+const RegisterPage = require('../bussiness/po/pages/RegisterPage');
+const AccountPage = require('../bussiness/po/pages/AccountPage');
+const StorePage = require('../bussiness/po/pages/StorePage');
+const ProductDetailsPage = require('../bussiness/po/pages/ProductPage');
+const FavoritesPage = require('../bussiness/po/pages/FavoritesPage');
+const Header = require('../bussiness/po/components/HeaderComponent');
+
 describe('Practicesoftwaretesting.com - Core Scenarios', () => {
 
     it('Scenario 1: Existing user logs in with valid credentials', async () => {
-        await browser.url('https://practicesoftwaretesting.com/auth/login');
+        await LoginPage.open();
+        await LoginPage.login('customer@practicesoftwaretesting.com', 'welcome01');
 
-        const emailInput = await $('[data-test="email"]');
-        const passwordInput = await $('[data-test="password"]');
-        const loginButton = await $('[data-test="login-submit"]');
-
-        await emailInput.setValue('customer@practicesoftwaretesting.com');
-        await passwordInput.setValue('welcome01');
-        await loginButton.click();
-
-        const navMenu = await $('[data-test="nav-menu"]');
-        await navMenu.waitForDisplayed({ timeout: 10000 });
-
+        // Note: Ideally, even this waitForDisplayed should be inside AccountPage
+        await AccountPage.pageTitle.waitForDisplayed({ timeout: 10000 });
         const currentUrl = await browser.getUrl();
-        const isMenuVisible = await navMenu.isDisplayed();
-
-        expect(currentUrl).to.not.include('/auth/login');
-        expect(isMenuVisible).to.be.true;
+        expect(currentUrl).to.include('/account');
     });
 
     it('Scenario 2: Customer searches for an exact product', async () => {
-        await browser.url('https://practicesoftwaretesting.com/');
-
-        const searchInput = await $('[data-test="search-query"]');
-        await searchInput.waitForDisplayed({ timeout: 10000 });
-
-        await searchInput.clearValue();
-        await searchInput.setValue('Thor Hammer');
-        await browser.keys('Enter');
+        await StorePage.open();
+        await StorePage.Filter.search('Thor Hammer');
 
         await browser.waitUntil(
             async () => {
-                const firstResultTitle = await $('[data-test="product-name"]');
-                if (await firstResultTitle.isExisting()) {
-                    const text = await firstResultTitle.getText();
-                    return text.includes('Thor Hammer');
-                }
-                return false;
+                const product = await StorePage.getFirstProduct();
+                if (!product) return false;
+
+                const title = await product.titleElement.getText();
+                return title.includes('Thor Hammer');
             },
             {
                 timeout: 10000,
-                timeoutMsg: 'Search failed: The grid never updated to show Thor Hammer.'
+                timeoutMsg: 'The search grid never updated to show Thor Hammer'
             }
         );
 
-        const productName = await $('[data-test="product-name"]').getText();
+        const finalProduct = await StorePage.getFirstProduct();
+        const productName = await finalProduct.titleElement.getText();
 
         productName.should.include('Thor Hammer');
         productName.should.not.be.empty;
     });
 
     it('Scenario 3: Filtering products by specific category', async () => {
+        await StorePage.open();
 
-        await browser.url('https://practicesoftwaretesting.com/');
+        // Let the Filter component handle the checkbox click and the wait for the grid to reload
+        await StorePage.Filter.filterByCategory('Hand Tools');
 
-        const handToolsCheckbox = await $('//label[contains(text(), "Hand Tools")]/input');
-
-        await handToolsCheckbox.waitForClickable({ timeout: 10000 });
-        await handToolsCheckbox.click();
-
-        await $('[data-test="filter_completed"]').waitForDisplayed({ timeout: 10000 });
-
-        const firstResultTitle = await $('[data-test="product-name"]');
-
-        const itemText = await firstResultTitle.getText();
+        const firstProduct = await StorePage.getFirstProduct();
+        const itemText = await firstProduct.titleElement.getText();
 
         assert.isNotNull(itemText, 'Expected to find at least one product in the Hand Tools category');
         assert.isString(itemText, 'The product title should be returned as a string');
     });
 
     it('Scenario 4: Adding a product to the basket from the details page', async () => {
-        await browser.url('https://practicesoftwaretesting.com/');
+        await StorePage.open();
 
-        const firstProduct = await $('[data-test^="product-"]');
-        await firstProduct.waitForDisplayed({ timeout: 10000 });
-        await firstProduct.click();
+        // Click the first product
+        const firstProduct = await StorePage.getFirstProduct();
+        await firstProduct.rootElement.click(); // Assuming you add click to the component, or just click root
 
-        const addToCartBtn = await $('[data-test="add-to-cart"]');
-        await addToCartBtn.waitForDisplayed({ timeout: 10000 });
-        await addToCartBtn.click();
+        // Now we are on the Product Details Page
+        await ProductDetailsPage.addToCart();
 
-        const cartQuantityBadge = await $('[data-test="cart-quantity"]');
+        // The Header component should encapsulate waiting for the badge to update
+        await Header.waitForCartQuantity('1');
+        const finalQuantity = await Header.getCartQuantity();
 
-        await browser.waitUntil(
-            async () => {
-                const text = await cartQuantityBadge.getText();
-                return text === '1';
-            },
-            {
-                timeout: 10000,
-                timeoutMsg: 'Expected cart badge to update to 1'
-            }
-        );
-
-        const finalQuantity = await cartQuantityBadge.getText();
         expect(finalQuantity).to.equal('1');
     });
 
     it('Scenario 5: Authenticated user adds an item to favorites', async () => {
+        // 1. Log in (Reusing Scenario 1's logic!)
+        await LoginPage.open();
+        await LoginPage.login('customer@practicesoftwaretesting.com', 'welcome01');
 
-        await browser.url('https://practicesoftwaretesting.com/auth/login');
-        await $('[data-test="email"]').setValue('customer@practicesoftwaretesting.com');
-        await $('[data-test="password"]').setValue('welcome01');
-        await $('[data-test="login-submit"]').click();
+        // 2. Navigate to store and click the first product
+        await StorePage.open();
+        const firstProduct = await StorePage.getFirstProduct();
+        await firstProduct.rootElement.click();
 
-        const navMenu = await $('[data-test="nav-menu"]');
-        await navMenu.waitForDisplayed({ timeout: 10000 });
+        // 3. Add to favorites
+        await ProductDetailsPage.addToFavorites();
 
-        await browser.url('https://practicesoftwaretesting.com/');
-        const firstProduct = await $('[data-test^="product-"]');
-        await firstProduct.waitForDisplayed({ timeout: 10000 });
-        await firstProduct.click();
+        // 4. Navigate to Favorites using the Header menu
+        await Header.navigateToFavorites();
 
-        await browser.waitUntil(
-            async () => (await browser.getUrl()).includes('/product/'),
-            { timeout: 5000, timeoutMsg: 'Failed to navigate to product details' }
-        );
+        // 5. Verify the items on the Favorites Page
+        const favoriteItemsCount = await FavoritesPage.getFavoriteItemsCount();
 
-        const favoriteBtn = await $('[data-test="add-to-favorites"]');
-        await favoriteBtn.waitForDisplayed({ timeout: 10000 });
-        await favoriteBtn.click();
-
-        await navMenu.click();
-
-        const myFavoritesLink = await $('[data-test="nav-my-favorites"]');
-        await myFavoritesLink.waitForDisplayed({ timeout: 5000 });
-        await myFavoritesLink.click();
-
-        await browser.waitUntil(
-            async () => (await browser.getUrl()).includes('favorites'),
-            { timeout: 5000, timeoutMsg: 'Failed to navigate to Favorites page' }
-        );
-        await browser.pause(2000);
-
-        const favoriteItems = await $$('[data-test^="favorite-"]');
-
-        expect(favoriteItems.length).to.be.greaterThan(0);
-        expect(favoriteItems).to.be.an('array');
+        expect(favoriteItemsCount).to.be.greaterThan(0);
     });
 });

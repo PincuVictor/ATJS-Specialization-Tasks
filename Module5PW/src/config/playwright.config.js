@@ -1,12 +1,13 @@
 const { defineConfig, devices } = require('@playwright/test');
+const path = require('path');
 
 module.exports = defineConfig({
-  testDir: './tests',
+  testDir: '../tests',
   retries: 1,
   workers: 2,
   reporter: [
     ['list'],
-    ['html', { outputFolder: 'playwright-report', open: 'never' }]
+    ['html', { outputFolder: '../../playwright-report', open: 'never' }]
   ],
 
   use: {
