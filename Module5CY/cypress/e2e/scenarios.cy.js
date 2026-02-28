@@ -1,87 +1,78 @@
-describe('Remaining Scenarios', () => {
+const RegisterPage = require('../../src/business/po/pages/RegisterPage');
+const StorePage = require('../../src/business/po/pages/StorePage');
+const ProfilePage = require('../../src/business/po/pages/ProfilePage');
+const CheckoutPage = require('../../src/business/po/pages/CheckoutPage');
+const LoginPage = require('../../src/business/po/pages/LoginPage');
+const HeaderComponent = require('../../src/business/po/components/HeaderComponent');
+const ProductDetailsPage = require('../../src/business/po/pages/ProductPage');
+
+describe('Cypress - Remaining Scenarios POM', () => {
 
     it('Scenario 5: Visitor registers a new customer account', () => {
-        cy.visit('/auth/register');
-
-        cy.get('[data-test="first-name"]').type('John');
-        cy.get('[data-test="last-name"]').type('Doe');
-        cy.get('[data-test="dob"]').type('1990-01-01');
-        cy.get('[data-test="street"]').type('123 Cypress Lane');
-        cy.get('[data-test="postal_code"]').type('12345');
-        cy.get('[data-test="city"]').type('Testville');
-        cy.get('[data-test="state"]').type('Texas');
-        cy.get('[data-test="country"]').select('US');
-        cy.get('[data-test="phone"]').type('1234567890');
+        RegisterPage.open();
 
         const randomEmail = `johndoe${Date.now()}@example.com`;
-        cy.get('[data-test="email"]').type(randomEmail);
-        cy.get('[data-test="password"]').type('Sparga123!@');
 
-        cy.get('[data-test="register-submit"]').click();
+        RegisterPage.registerUser({
+            firstName: 'John',
+            lastName: 'Doe',
+            dob: '1990-01-01',
+            street: '123 Cypress Lane',
+            postalCode: '12345',
+            city: 'Testville',
+            state: 'Texas',
+            country: 'US',
+            phone: '1234567890',
+            email: randomEmail,
+            password: 'Sparga123!@'
+        });
 
         cy.url().should('include', '/auth/login');
     });
 
     it('Scenario 6: Filtering by category and sorting by price', () => {
-        cy.visit('/');
+        StorePage.open();
 
-        cy.contains('label', 'Hand Tools').find('input').check();
+        StorePage.filterByCategory('Hand Tools');
+        StorePage.sortBy('price,desc');
 
-        cy.get('[data-test="sort"]').select('price,desc');
-
-        cy.get('.card').should('have.length.greaterThan', 0);
+        StorePage.productCards.should('have.length.greaterThan', 0);
     });
 
     it('Scenario 7: User updates their profile contact number', () => {
-        cy.visit('/auth/login');
-        cy.get('[data-test="email"]').type('customer@practicesoftwaretesting.com');
-        cy.get('[data-test="password"]').type('welcome01');
-        cy.get('[data-test="login-submit"]').click();
+        LoginPage.open();
+        LoginPage.login('customer@practicesoftwaretesting.com', 'welcome01');
 
-        cy.get('[data-test="nav-menu"]').click();
-        cy.get('[data-test="nav-my-profile"]').click();
+        HeaderComponent.goToProfile();
 
-        cy.get('[data-test="phone"]').clear().type('0987654321');
-        cy.get('[data-test="update-profile-submit"]').click();
+        ProfilePage.updateContactNumber('0987654321');
 
-        cy.contains('successfully updated', { matchCase: false }).should('be.visible');
+        ProfilePage.successToast.should('be.visible');
     });
 
     it('Scenario 8: Successful checkout process', () => {
+        LoginPage.open();
+        LoginPage.login('customer@practicesoftwaretesting.com', 'welcome01');
+        HeaderComponent.navMenu.should('be.visible');
 
-        cy.visit('/auth/login');
-        cy.get('[data-test="email"]').type('customer@practicesoftwaretesting.com');
-        cy.get('[data-test="password"]').type('welcome01');
-        cy.get('[data-test="login-submit"]').click();
-
-
-        cy.get('[data-test="nav-menu"]').should('be.visible');
-
-        cy.get('[data-test="nav-home"]').click();
-
-        cy.get('[data-test^="product-"]').first().click();
-        cy.get('[data-test="add-to-cart"]').click();
-
+        HeaderComponent.navHome.click();
+        StorePage.firstProduct.click();
+        ProductDetailsPage.addToCartBtn.click();
         cy.contains('Product added to shopping cart.').should('be.visible');
-        cy.get('[data-test="cart-quantity"]').should('have.text', '1');
+        ProductDetailsPage.cartBadge.should('have.text', '1');
 
-        cy.get('[data-test="nav-cart"]').click();
-        cy.get('[data-test="proceed-1"]').click();
+        HeaderComponent.goToCart();
+        CheckoutPage.proceedToAddress();
+        CheckoutPage.fillAddressAndProceed('Texas', '12345');
 
-        cy.get('[data-test="proceed-2"]').click();
+        CheckoutPage.fillPaymentAndFinish({
+            method: 'credit-card',
+            cardNumber: '1234-5678-1234-5678',
+            expiration: '12/2090',
+            cvv: '123',
+            cardHolder: 'Lingu Dingu'
+        });
 
-        cy.get('[data-test="state"]').type('Texas');
-        cy.get('[data-test="postal_code"]').type('12345');
-        cy.get('[data-test="proceed-3"]').click();
-
-        cy.get('[data-test="payment-method"]').select('credit-card');
-        cy.get('[data-test="credit_card_number"]').type('1234-5678-1234-5678');
-        cy.get('[data-test="expiration_date"]').type('12/2090');
-        cy.get('[data-test="cvv"]').type('123');
-        cy.get('[data-test="card_holder_name"]').type('Lingu Dingu');
-        cy.get('[data-test="finish"]').click();
-
-        cy.contains('Payment was successful').should('be.visible');
+        CheckoutPage.paymentSuccessMessage.should('be.visible');
     });
-
 });

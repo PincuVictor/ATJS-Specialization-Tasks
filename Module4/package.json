@@ -20,6 +20,7 @@
   "dependencies": {
     "@wdio/globals": "^9.23.0",
     "chai": "^6.2.2",
+    "wdio-html-nice-reporter": "^8.1.7",
     "webdriver": "^9.24.0"
   }
 }
