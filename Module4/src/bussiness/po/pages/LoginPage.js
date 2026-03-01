@@ -1,7 +1,6 @@
 const BasePage = require('../../../core/BasePage');
 
 class LoginPage extends BasePage {
-
     get emailInput() {
         return $('[data-test="email"]');
     }
@@ -12,7 +11,6 @@ class LoginPage extends BasePage {
         return $('[data-test="login-submit"]');
     }
 
-
     async open() {
         await super.navigate('auth/login');
     }
@@ -21,7 +19,6 @@ class LoginPage extends BasePage {
         await this.enterText(this.passwordInput, password);
         await this.clickElement(this.loginButton);
     }
-
 }
 
-module.exports = new LoginPage;
+module.exports = new LoginPage();

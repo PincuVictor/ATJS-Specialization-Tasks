@@ -7,7 +7,6 @@ const HeaderComponent = require('../../src/business/po/components/HeaderComponen
 const ProductDetailsPage = require('../../src/business/po/pages/ProductPage');
 
 describe('Cypress - Remaining Scenarios POM', () => {
-
     it('Scenario 5: Visitor registers a new customer account', () => {
         RegisterPage.open();
 

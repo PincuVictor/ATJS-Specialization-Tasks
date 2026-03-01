@@ -5,7 +5,7 @@ const StoreFilterComponent = require('../../po/components/StoreFilterComponent')
 class StorePage extends BasePage {
     constructor() {
         super();
-        this.Filter = new StoreFilterComponent;
+        this.Filter = new StoreFilterComponent();
     }
     get productCardElements() {
         return $$('.card[data-test^="product-"]');
@@ -28,7 +28,7 @@ class StorePage extends BasePage {
         );
 
         const elements = await this.productCardElements;
-        return elements.map(element => new ProductComponent(element));
+        return elements.map((element) => new ProductComponent(element));
     }
 
     async getFirstProduct() {

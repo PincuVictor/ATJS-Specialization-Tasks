@@ -46,7 +46,19 @@ class RegisterPage extends BasePage {
         await super.navigate('/auth/register');
     }
 
-    async register(firstName, lastName, dob, street, city, postalCode, state, country, phone, email, password) {
+    async register(
+        firstName,
+        lastName,
+        dob,
+        street,
+        city,
+        postalCode,
+        state,
+        country,
+        phone,
+        email,
+        password
+    ) {
         await this.enterText(this.firstNameInput, firstName);
         await this.enterText(this.lastNameInput, lastName);
         await this.enterText(this.dobInput, dob);

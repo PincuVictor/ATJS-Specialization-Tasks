@@ -2,32 +2,29 @@ const { defineConfig, devices } = require('@playwright/test');
 const path = require('path');
 
 module.exports = defineConfig({
-  testDir: '../tests',
-  retries: 1,
-  workers: 2,
-  reporter: [
-    ['list'],
-    ['html', { outputFolder: '../../playwright-report', open: 'never' }]
-  ],
+    testDir: '../tests',
+    retries: 1,
+    workers: 2,
+    reporter: [['list'], ['html', { outputFolder: '../../playwright-report', open: 'never' }]],
 
-  use: {
-    baseURL: 'https://practicesoftwaretesting.com',
-    headless: true,
-    trace: 'on-first-retry',
-  },
+    use: {
+        baseURL: 'https://practicesoftwaretesting.com',
+        headless: true,
+        trace: 'on-first-retry'
+    },
 
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-  ],
+    projects: [
+        {
+            name: 'chromium',
+            use: { ...devices['Desktop Chrome'] }
+        },
+        {
+            name: 'firefox',
+            use: { ...devices['Desktop Firefox'] }
+        },
+        {
+            name: 'webkit',
+            use: { ...devices['Desktop Safari'] }
+        }
+    ]
 });

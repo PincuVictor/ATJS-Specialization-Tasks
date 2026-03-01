@@ -1,0 +1,23 @@
+{
+  "env": {
+    "node": true,
+    "mocha": true,
+    "es2021": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "globals": {
+    "browser": "readonly",
+    "$": "readonly",
+    "$$": "readonly",
+    "cy": "readonly",
+    "Cypress": "readonly"
+  },
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-undef": "error"
+  }
+}

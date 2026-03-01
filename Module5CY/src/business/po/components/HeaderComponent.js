@@ -8,7 +8,8 @@ class HeaderComponent extends BasePage {
         return cy.get('[data-test="nav-menu"]');
     }
     get navCart() {
-        return cy.get('[data-test="nav-cart"]'); }
+        return cy.get('[data-test="nav-cart"]');
+    }
 
     get navMyProfile() {
         return cy.get('[data-test="nav-my-profile"]');
@@ -16,7 +17,6 @@ class HeaderComponent extends BasePage {
     get cartBadge() {
         return cy.get('[data-test="cart-quantity"]');
     }
-
 
     goToProfile() {
         this.clickElement(this.navMenu);
