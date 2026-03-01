@@ -14,8 +14,8 @@ pipeline {
             steps {
                 dir('Module6') {
                     echo 'Running API Tests...'
-                    sh 'npm ci'
-                    sh 'npm run test:api'
+                    bat 'npm ci'
+                    bat 'npm run test:api'
                 }
             }
         }
@@ -24,9 +24,9 @@ pipeline {
             steps {
                 dir('Module5PW') {
                     echo 'Running UI Tests...'
-                    sh 'npm ci'
-                    sh 'npx playwright install --with-deps chromium'
-                    sh 'npx playwright test --config=src/config/playwright.config.js'
+                    bat 'npm ci'
+                    bat 'npx playwright install --with-deps chromium'
+                    bat 'npx playwright test --config=src/config/playwright.config.js'
                 }
             }
         }
