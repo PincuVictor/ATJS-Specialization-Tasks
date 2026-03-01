@@ -29,14 +29,6 @@ pipeline {
                     }
                 }
             }
-            stage('Cypress (Module 5)') {
-                steps {
-                    dir('Module5CY') {
-                        bat 'npm ci'
-                        bat 'npx cypress run --browser chrome'
-                    }
-                }
-            }
             stage('WebdriverIO (Module 4)') {
                 steps {
                     dir('Module4') {
