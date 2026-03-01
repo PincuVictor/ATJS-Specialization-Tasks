@@ -9,51 +9,40 @@ pipeline {
         nodejs 'Node22'
     }
 
-    stages {
-        stage('Job 1: UI Tests (Parallel Execution)') {
-            parallel {
-                stage('Cucumber BDD (Module 7)') {
-                    steps {
-                        dir('Module12') {
-                            bat 'npm ci'
-                            bat 'npx playwright install --with-deps'
-                            bat 'npm run test:chrome'
-                        }
-                    }
-                }
-                stage('Playwright (Module 5)') {
-                    steps {
-                        dir('Module5PW') {
-                            bat 'npm ci'
-                            bat 'npx playwright install --with-deps'
-                            bat 'npx playwright test --project=chromium'
-                        }
-                    }
-                }
-                stage('Cypress (Module 5)') {
-                    steps {
-                        dir('Module5CY') {
-                            bat 'npm ci'
-                            bat 'npx cypress run'
-                        }
-                    }
-                }
-                stage('WebdriverIO (Module 4)') {
-                    steps {
-                        dir('Module4') {
-                            bat 'npm ci'
-                            bat 'npx wdio run wdio.conf.js'
-                        }
+    stage('Job 1: UI Tests (Parallel Execution)') {
+        parallel {
+            stage('Cucumber BDD (Module 7)') {
+                steps {
+                    dir('Module7') {
+                        bat 'npm ci'
+                        bat 'npx playwright install --with-deps'
+                        bat 'npm run test:chrome'
                     }
                 }
             }
-        }
-
-        stage('Job 2: API Tests') {
-            steps {
-                dir('Module6') {
-                    bat 'npm ci'
-                    bat 'npm run test:api'
+            stage('Playwright (Module 5)') {
+                steps {
+                    dir('Module5PW') {
+                        bat 'npm ci'
+                        bat 'npx playwright install --with-deps'
+                        bat 'npx playwright test --config=src/config/playwright.config.js --project=chromium'
+                    }
+                }
+            }
+            stage('Cypress (Module 5)') {
+                steps {
+                    dir('Module5CY') {
+                        bat 'npm ci'
+                        bat 'npx cypress run --browser chrome'
+                    }
+                }
+            }
+            stage('WebdriverIO (Module 4)') {
+                steps {
+                    dir('Module4') {
+                        bat 'npm ci'
+                        bat 'npm run wdio'
+                    }
                 }
             }
         }

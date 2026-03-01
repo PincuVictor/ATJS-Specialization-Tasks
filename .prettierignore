@@ -5,3 +5,7 @@
 **/allure-results/
 **/cypress/videos/
 **/cypress/screenshots/
+**/cypress/reports/**
+**/cypress/screenshots/**
+**/cypress/videos/**
+**/.jsons/**

@@ -35,9 +35,16 @@ BeforeAll(async function () {
 });
 
 Before(async function () {
-    this.context = await browser.newContext({ baseURL: 'https://practicesoftwaretesting.com' });
+    this.context = await browser.newContext({
+        baseURL: 'https://practicesoftwaretesting.com',
+        userAgent:
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        viewport: { width: 1280, height: 720 }
+    });
+
     this.page = await this.context.newPage();
 
+    // Initialize POM
     this.storePage = new StorePage(this.page);
     this.loginPage = new LoginPage(this.page);
     this.registerPage = new RegisterPage(this.page);
