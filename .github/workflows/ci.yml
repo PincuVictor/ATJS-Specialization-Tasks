@@ -1,60 +1,64 @@
-name: Test Automation Pipeline
+name: Master Test Automation Pipeline
 
 on:
   push:
-    branches: [ "main", "feature" ]
+    branches: [ main, feature ]
   pull_request:
-    branches: [ "main", "feature" ]
+    branches: [ main, feature ]
 
 jobs:
   lint-and-format:
-    name: Run ESLint and Prettier
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - name: Install Root Dependencies
-        run: npm ci
-
-      - name: Check Prettier Formatting
-        run: npm run format:check
-
-      - name: Run ESLint
-        run: npm run lint
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
 
   api-tests:
-    name: Run API Tests
-    needs: lint-and-format
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Module6
+    needs: lint-and-format
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm ci
-      - run: npm run test:api
+      - name: Run API Tests
+        run: cd Module6 && npm ci && npm run test:api
 
-  ui-tests:
-    name: Run Playwright Tests
-    needs: lint-and-format
+  ui-tests-cucumber:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Module5PW
+    needs: lint-and-format
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm ci
-      - run: npx playwright install --with-deps
-      - run: npx playwright test --config=src/config/playwright.config.js
+      - name: Run Cucumber BDD Tests
+        run: cd Module12 && npm ci && npx playwright install --with-deps && npm run test:chrome
+
+  ui-tests-playwright:
+    runs-on: ubuntu-latest
+    needs: lint-and-format
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run Playwright Tests
+        run: cd Module5PW && npm ci && npx playwright install --with-deps && npx playwright test --config=src/config/playwright.config.js --project=chromium
+
+  ui-tests-wdio:
+    runs-on: ubuntu-latest
+    needs: lint-and-format
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run WebdriverIO Tests
+        run: cd Module4 && npm ci && npm run wdio
