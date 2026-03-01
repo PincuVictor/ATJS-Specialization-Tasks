@@ -14,7 +14,7 @@ pipeline {
             parallel {
                 stage('Cucumber BDD (Module 7)') {
                     steps {
-                        dir('Module7') {
+                        dir('Module12') {
                             bat 'npm ci'
                             bat 'npx playwright install --with-deps'
                             bat 'npm run test:chrome'
@@ -38,7 +38,7 @@ pipeline {
                         }
                     }
                 }
-                stage('WebdriverIO (Module 5)') {
+                stage('WebdriverIO (Module 4)') {
                     steps {
                         dir('Module4') {
                             bat 'npm ci'
