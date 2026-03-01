@@ -25,7 +25,7 @@ pipeline {
                 dir('Module5PW') {
                     echo 'Running UI Tests...'
                     bat 'npm ci'
-                    bat 'npx playwright install --with-deps chromium'
+                    bat 'npx playwright install --with-deps'
                     bat 'npx playwright test --config=src/config/playwright.config.js'
                 }
             }
