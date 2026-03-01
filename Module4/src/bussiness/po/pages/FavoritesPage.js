@@ -15,7 +15,9 @@ class FavoritesPage extends BasePage {
             await browser.waitUntil(async () => (await this.favoriteItems).length > 0, {
                 timeout: 5000
             });
-        } catch (e) {}
+        } catch (e) {
+            console.error(e);
+        }
 
         const items = await this.favoriteItems;
         return items.length;

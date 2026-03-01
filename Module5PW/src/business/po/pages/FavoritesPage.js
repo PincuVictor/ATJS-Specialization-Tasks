@@ -13,7 +13,9 @@ class FavoritesPage extends BasePage {
         await this.page.waitForURL(/.*favorites/);
         try {
             await this.favoriteItems.first().waitFor({ state: 'visible', timeout: 5000 });
-        } catch (e) {}
+        } catch (e) {
+            console.error(e);
+        }
 
         return await this.favoriteItems.count();
     }
