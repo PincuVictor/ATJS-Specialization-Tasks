@@ -40,8 +40,17 @@ When('I add it to favorites', async function () {
 When('I fill out the registration form with valid data', async function () {
     const randomEmail = `testuser${Date.now()}@example.com`;
     await this.registerPage.register(
-        'John', 'Doe', '1990-01-01', '123 Main St', 'Testville',
-        '12345', 'Texas', 'US', '1234567890', randomEmail, 'Sparga123!@'
+        'John',
+        'Doe',
+        '1990-01-01',
+        '123 Main St',
+        'Testville',
+        '12345',
+        'Texas',
+        'US',
+        '1234567890',
+        randomEmail,
+        'Sparga123!@'
     );
 });
 
@@ -104,7 +113,9 @@ Then('I should see a profile updated success message', async function () {
 });
 
 Then('I should see a successful payment message', async function () {
-    await expect(this.page.locator('.help-block').getByText('Payment was successful')).toBeVisible();
+    await expect(
+        this.page.locator('.help-block').getByText('Payment was successful')
+    ).toBeVisible();
 });
 
 Then('the contact form should be visible', async function () {

@@ -46,7 +46,6 @@ Before(async function () {
     this.profilePage = new ProfilePage(this.page);
     this.checkoutPage = new CheckoutPage(this.page);
     this.contactPage = new ContactPage(this.page);
-
 });
 
 After(async function () {

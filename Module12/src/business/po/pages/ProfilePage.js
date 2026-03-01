@@ -10,7 +10,7 @@ class ProfilePage {
 
     async updatePhoneNumber() {
         await expect(this.phoneInput).not.toBeEmpty({ timeout: 10000 });
-        const uniquePhone = "098" + Math.floor(1000000 + Math.random() * 9000000);
+        const uniquePhone = '098' + Math.floor(1000000 + Math.random() * 9000000);
 
         await this.phoneInput.click();
         await this.phoneInput.clear();
