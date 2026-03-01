@@ -1,0 +1,60 @@
+name: Test Automation Pipeline
+
+on:
+  push:
+    branches: [ "main", "feature" ]
+  pull_request:
+    branches: [ "main", "feature" ]
+
+jobs:
+  lint-and-format:
+    name: Run ESLint and Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install Root Dependencies
+        run: npm ci
+
+      - name: Check Prettier Formatting
+        run: npm run format:check
+
+      - name: Run ESLint
+        run: npm run lint
+
+  api-tests:
+    name: Run API Tests
+    needs: lint-and-format
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Module6
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run test:api
+
+  ui-tests:
+    name: Run Playwright Tests
+    needs: lint-and-format
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Module5PW
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npx playwright test --config=src/config/playwright.config.js

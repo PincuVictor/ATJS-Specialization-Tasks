@@ -6,7 +6,6 @@ const FavoritesPage = require('../business/po/pages/FavoritesPage');
 const HeaderComponent = require('../business/po/components/HeaderComponent');
 
 test.describe('Practice Software Testing - Playwright Scenarios', () => {
-
     test('Scenario 1: Existing user logs in with valid credentials', async ({ page }) => {
         const loginPage = new LoginPage(page);
         const header = new HeaderComponent(page);

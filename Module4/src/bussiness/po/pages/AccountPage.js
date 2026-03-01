@@ -16,7 +16,6 @@ class AccountPage extends BasePage {
     get navMessages() {
         return $('[data-test="nav-messages"]');
     }
-
 }
 
-module.exports = new AccountPage;
+module.exports = new AccountPage();

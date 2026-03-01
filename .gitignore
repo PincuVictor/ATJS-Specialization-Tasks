@@ -1,0 +1,46 @@
+# =========================
+# 1. DEPENDENCIES & CACHES
+# =========================
+node_modules/
+.npm/
+.eslintcache
+
+# =========================
+# 2. TEST REPORTS & ARTIFACTS
+# =========================
+# Playwright (Module5PW)
+playwright-report/
+test-results/
+blob-report/
+
+# Cypress (Module5CY)
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+cypress/reports/
+
+# WebdriverIO (Module4)
+allure-results/
+allure-report/
+logs/
+reports/
+errorShots/
+
+# General / Mocha / Coverage
+coverage/
+.nyc_output/
+
+# =========================
+# 3. IDE & OS FILES
+# =========================
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+
+# =========================
+# 4. ENVIRONMENT VARIABLES
+# =========================
+.env
+.env.*

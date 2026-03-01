@@ -32,7 +32,6 @@ class Header extends BasePage {
         await this.clickElement(this.navUserMenu);
         await this.clickElement(this.navMyFavorites);
     }
-    
 }
 
 module.exports = new Header();

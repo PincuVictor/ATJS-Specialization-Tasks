@@ -6,17 +6,18 @@ class FavoritesPage extends BasePage {
     }
 
     async getFavoriteItemsCount() {
-        await browser.waitUntil(
-            async () => (await browser.getUrl()).includes('favorites'),
-            { timeout: 5000, timeoutMsg: 'Never reached the favorites page' }
-        );
+        await browser.waitUntil(async () => (await browser.getUrl()).includes('favorites'), {
+            timeout: 5000,
+            timeoutMsg: 'Never reached the favorites page'
+        });
 
         try {
-            await browser.waitUntil(
-                async () => (await this.favoriteItems).length > 0,
-                { timeout: 5000 }
-            );
-        } catch (e) {}
+            await browser.waitUntil(async () => (await this.favoriteItems).length > 0, {
+                timeout: 5000
+            });
+        } catch (e) {
+            console.error(e);
+        }
 
         const items = await this.favoriteItems;
         return items.length;

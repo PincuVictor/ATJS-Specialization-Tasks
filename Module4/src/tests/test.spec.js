@@ -11,7 +11,6 @@ const FavoritesPage = require('../bussiness/po/pages/FavoritesPage');
 const Header = require('../bussiness/po/components/HeaderComponent');
 
 describe('Practicesoftwaretesting.com - Core Scenarios', () => {
-
     it('Scenario 1: Existing user logs in with valid credentials', async () => {
         await LoginPage.open();
         await LoginPage.login('customer@practicesoftwaretesting.com', 'welcome01');
@@ -56,7 +55,10 @@ describe('Practicesoftwaretesting.com - Core Scenarios', () => {
         const firstProduct = await StorePage.getFirstProduct();
         const itemText = await firstProduct.titleElement.getText();
 
-        assert.isNotNull(itemText, 'Expected to find at least one product in the Hand Tools category');
+        assert.isNotNull(
+            itemText,
+            'Expected to find at least one product in the Hand Tools category'
+        );
         assert.isString(itemText, 'The product title should be returned as a string');
     });
 

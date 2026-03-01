@@ -9,7 +9,9 @@
   },
   "private": true,
   "dependencies": {
-    "chai": "^6.2.2",
     "mocha": "^11.7.5"
+  },
+  "devDependencies": {
+    "chai": "^4.5.0"
   }
 }

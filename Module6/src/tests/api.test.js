@@ -43,7 +43,7 @@ describe('Restful-Booker API Tests', () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                Accept: 'application/json'
             },
             body: JSON.stringify(payload)
         });
@@ -61,7 +61,7 @@ describe('Restful-Booker API Tests', () => {
     it('Scenario 3: Get the created booking by ID', async () => {
         const response = await fetch(`${BASE_URL}/booking/${bookingId}`, {
             method: 'GET',
-            headers: { 'Accept': 'application/json' }
+            headers: { Accept: 'application/json' }
         });
 
         expect(response.status).to.equal(200);
@@ -89,8 +89,8 @@ describe('Restful-Booker API Tests', () => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Cookie': `token=${token}`
+                Accept: 'application/json',
+                Cookie: `token=${token}`
             },
             body: JSON.stringify(updatedPayload)
         });
@@ -108,7 +108,7 @@ describe('Restful-Booker API Tests', () => {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Cookie': `token=${token}`
+                Cookie: `token=${token}`
             }
         });
 

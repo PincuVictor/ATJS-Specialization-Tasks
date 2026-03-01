@@ -8,7 +8,7 @@ class BasePage {
      * @returns {Promise<void>}
      */
     async clickElement(element) {
-        await element.waitForDisplayed({timeout: 10000});
+        await element.waitForDisplayed({ timeout: 10000 });
         await element.click();
     }
 
@@ -18,7 +18,7 @@ class BasePage {
      * @returns {Promise<void>}
      */
     async enterText(element, text) {
-        await element.waitForDisplayed({timeout: 10000});
+        await element.waitForDisplayed({ timeout: 10000 });
         await element.setValue(text);
     }
 
@@ -27,7 +27,7 @@ class BasePage {
      * @returns {Promise<string>}
      */
     async getText(element) {
-        await element.waitForDisplayed({timeout: 10000});
+        await element.waitForDisplayed({ timeout: 10000 });
         return await element.getText();
     }
 }
